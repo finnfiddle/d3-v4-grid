@@ -1,6 +1,6 @@
 {
   "name": "d3-v4-grid",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Grid layout for D3 v4",
   "main": "dist/d3-grid.js",
   "jsnext:main": "src/d3-grid.js",

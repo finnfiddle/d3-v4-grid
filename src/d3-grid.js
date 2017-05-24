@@ -10,10 +10,12 @@ export default function () {
   let padding = [0, 0];
   let cols;
   let rows;
+  let nodes;
+  let count;
+  let result = null;
 
-  const layout = nodes => {
+  const layout = () => {
     let i = -1;
-    const n = nodes.length;
     let tmpCols = cols || 0;
     let tmpRows = rows || 0;
     let col;
@@ -26,11 +28,11 @@ export default function () {
     // FIXME: when rows are set, fill top-to-bottom (make test with 5 data points and 4 rows)
 
     if (tmpRows && !tmpCols) {
-      tmpCols = Math.ceil(n / tmpRows);
+      tmpCols = Math.ceil(count / tmpRows);
     }
     else {
-      if (!tmpCols) tmpCols = Math.ceil(Math.sqrt(n));
-      if (!tmpRows) tmpRows = Math.ceil(n / tmpCols);
+      if (!tmpCols) tmpCols = Math.ceil(Math.sqrt(count));
+      if (!tmpRows) tmpRows = Math.ceil(count / tmpCols);
     }
 
     if (nodeSize) {
@@ -74,60 +76,75 @@ export default function () {
       actualSize[1] = y(1);
     }
 
-    while (++i < n) {
+    const newLayout = [];
+
+    while (++i < count) {
       col = i % tmpCols;
       row = Math.floor(i / tmpCols);
-      nodes[i].x = x(col);
-      nodes[i].y = y(row);
+      newLayout.push(Object.assign({}, nodes[i], { x: x(col), y: y(row) }));
     }
 
-    return nodes;
+    cols = tmpCols;
+    rows = tmpRows;
+
+    return newLayout;
   };
 
-  const grid = function (nodes) {
-    return layout(nodes);
-  };
+  const grid = {
 
-  grid.size = function (value) {
-    if (!itsSet(value)) return nodeSize ? actualSize : size;
-    actualSize = [0, 0];
-    nodeSize = (size = value) == null;
-    return grid;
-  };
+    size(value) {
+      if (!itsSet(value)) return nodeSize ? actualSize : size;
+      actualSize = [0, 0];
+      nodeSize = (size = value) == null;
+      return this;
+    },
 
-  grid.nodeSize = function (value) {
-    if (!itsSet(value)) return nodeSize ? size : actualSize;
-    actualSize = [0, 0];
-    nodeSize = (size = value) != null;
-    return grid;
-  };
+    nodeSize(value) {
+      if (!itsSet(value)) return nodeSize ? size : actualSize;
+      actualSize = [0, 0];
+      nodeSize = (size = value) != null;
+      return this;
+    },
 
-  grid.rows = function (value) {
-    if (!itsSet(value)) return rows;
-    rows = value;
-    return grid;
-  };
+    rows(value) {
+      if (!itsSet(value)) return rows;
+      rows = value;
+      return this;
+    },
 
-  grid.cols = function (value) {
-    if (!itsSet(value)) return cols;
-    cols = value;
-    return grid;
-  };
+    cols(value) {
+      if (!itsSet(value)) return cols;
+      cols = value;
+      return this;
+    },
 
-  grid.bands = function () {
-    bands = true;
-    return grid;
-  };
+    bands(value) {
+      if (!itsSet(value)) return bands;
+      bands = value;
+      return this;
+    },
 
-  grid.points = function () {
-    bands = false;
-    return grid;
-  };
+    padding(value) {
+      if (!itsSet(value)) return padding;
+      padding = value;
+      return this;
+    },
 
-  grid.padding = function (value) {
-    if (!itsSet(value)) return padding;
-    padding = value;
-    return grid;
+    data(value) {
+      if (!itsSet(value)) return nodes;
+      nodes = value;
+      count = nodes.length;
+      return this;
+    },
+
+    layout() {
+      result = layout();
+      return this;
+    },
+
+    nodes() {
+      return result;
+    },
   };
 
   return grid;
