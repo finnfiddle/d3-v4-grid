@@ -1,73 +1,108 @@
-# d3.layout.grid
+# D3 v4 Grid Layout
 
 A grid layout for [D3](http://d3js.org). The grid layout takes a one-dimensional array of data and arranges it on a two-dimensional grid.
 
+## Installation
+
+```
+npm i d3-v4-grid
+```
+
+## Example
+
+```javascript
+import Grid from 'd3-v4-grid';
+
+const grid = Grid() // create new grid layout
+  .data([ // input an array of data
+    { foo: 'bar' },
+    { foo: 'bar' },
+    { foo: 'bar' },
+    { foo: 'bar' },
+  ])
+  .bands(true) // use bands not points
+  .size([400, 200]); // set size of container
+
+// recompute the node positions
+grid.layout();
+
+console.log(grid.nodes());
+// [
+//   { foo: 'bar', x: 0, y: 0 },
+//   { foo: 'bar', x: 200, y: 0 },
+//   { foo: 'bar', x: 0, y: 100 },
+//   { foo: 'bar', x: 200, y: 100 },
+// ]
+
+console.log(grid.nodeSize());
+// [200, 100]
+
+console.log(grid.cols());
+// 2
+
+console.log(grid.rows());
+// 2
+```
+
 ## API
 
-<a name="layout-grid" href="#layout-grid">#</a> d3.layout.<b>grid</b>()
+### Grid()
 
 Constructs a new grid layout.
 
-<a name="grid" href="#grid">#</a> <b>grid</b>(<i>nodes</i>)
+### grid.size([size])
 
-Computes the layout for <i>nodes</i>. Per default, the layout tries to keep the column and row number as equal as possible and uses point spacing. Two attributes are set on each node:
+If size is specified, sets the overall size of the layout as [x, y].
 
-* x – the computed <i>x</i>-coordinate of the node position.
-* y – the computed <i>y</i>-coordinate of the node position.
+If size is set, returns the current size. Default size is 1×1.
 
-<a name="points" href="#points">#</a> grid.<b>points</b>()
+If instead nodeSize is set, returns the actual size of the layout after grid has been called.
 
-Configure the grid to treat nodes as points, cf. [d3.scale.ordinal().rangePoints()](https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-ordinal_rangePoints).
+### grid.nodeSize([nodeSize])
 
-<a name="bands" href="#bands">#</a> grid.<b>bands</b>()
+If nodeSize is specified, sets the size of an individual node as [x, y].
 
-Configure the grid to treat nodes as bands, cf. [d3.scale.ordinal().rangeBands()](https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-ordinal_rangeBands)
+If nodeSize is set, returns the current nodeSize.
 
-<a name="padding" href="#padding">#</a> grid.<b>padding</b>([<i>padding</i>])
+If instead size is set, returns the actual size of a node after grid has been called.
 
-Specify the <i>padding</i> between the node bands as [<i>x</i>, <i>y</i>]. <i>x</i> and <i>y</i> are relative to the band width/height, similar to the <i>padding</i> parameter of [d3.scale.ordinal().rangeBands()](https://github.com/mbostock/d3/wiki/Ordinal-Scales#wiki-ordinal_rangeBands).
+### grid.rows([num])
 
-If [nodeSize](#nodeSize) is set, <i>padding</i> is absolute. For example, to configure a grid layout for nodes with 100×100px size, and 20px horizontal and vertical padding, use:
+Fixes the layout to num rows or returns the number of rows (if it was set before).
+
+### grid.cols([num])
+
+Fixes the layout to num columns or returns the number of columns (if it was set before).
+
+### grid.bands([useBands])
+
+Configure the grid to treat nodes either as bands or points (default).
+
+If `useBands` is set to `true` then the layout will use `d3.scaleBand()` to calculate positions. If it is set to false (default) then it will use `d3.scalePoint()`.
+
+### grid.padding([padding])
+
+Specify the padding between the node bands as [x, y]. x and y are relative to the band width/height, similar to the padding parameter of d3.scale.ordinal().rangeBands().
+
+If nodeSize is set, padding is absolute. For example, to configure a grid layout for nodes with 100×100px size, and 20px horizontal and vertical padding, use:
 
 ```javascript
-var grid = d3.layout.grid()
+var grid = Grid()
   .nodeSize([100, 100])
   .padding([20, 20]);
 ```
+### grid.data([data])
 
-<a name="cols" href="#cols">#</a> grid.<b>cols</b>([<i>num</i>])
+If data is set it sets the input data array for the layout. If not set then it returns the current data array.
 
-Fixes the layout to <i>num</i> columns or returns the number of columns (if it was set before).
+### grid.layout()
 
-<a name="rows" href="#rows">#</a> grid.<b>rows</b>([<i>num</i>])
+Triggers the layout to recalculate the node positions.
 
-Fixes the layout to <i>num</i> rows or returns the number of rows (if it was set before).
+### grid.nodes()
 
-<a name="size" href="#size">#</a> grid.<b>size</b>([<i>size</i>])
-
-If <i>size</i> is specified, sets the overall size of the layout as [<i>x</i>, <i>y</i>]. 
-
-If <i>size</i> is set, returns the current <i>size</i>. Default size is 1×1.
-
-If instead [nodeSize](#nodeSize) is set, returns the actual size of the layout <i>after</i> [grid](#grid) has been called.
-
-<a name="nodeSize" href="#nodeSize">#</a> grid.<b>nodeSize</b>([<i>nodeSize</i>])
-
-If <i>nodeSize</i> is specified, sets the size of an individual node as [<i>x</i>, <i>y</i>].
-
-If <i>nodeSize</i> is set, returns the current <i>nodeSize</i>.
-
-If instead [size](#size) is set, returns the actual size of a node <i>after</i> [grid](#grid) has been called.
-
-
-## Examples
-
-* [Grid layout demo](http://bl.ocks.org/herrstucki/5684816)
-
-## Author
-
-Jeremy Stucki, [Interactive Things](http://interactivethings.com)
+Returns the original input data array with positions `x` and `y` values added to each item.
 
 ## License
 
-BSD, see LICENSE.txt
+MIT
