@@ -1,6 +1,6 @@
 # D3 v4 Grid Layout
 
-A grid layout for [D3](http://d3js.org). The grid layout takes a one-dimensional array of data and arranges it on a two-dimensional grid.
+A grid layout for [D3](http://d3js.org) forked from [https://github.com/interactivethings/d3-grid](https://github.com/interactivethings/d3-grid) and updated to use D3 v4. The grid layout takes a one-dimensional array of data and arranges it on a two-dimensional grid.
 
 ## Installation
 
