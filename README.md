@@ -52,7 +52,7 @@ Constructs a new grid layout.
 
 ### grid.size([size])
 
-If size is specified, sets the overall size of the layout as [x, y].
+If size is specified, sets the overall size of the layout as [width, height].
 
 If size is set, returns the current size. Default size is 1×1.
 
@@ -60,7 +60,7 @@ If instead nodeSize is set, returns the actual size of the layout after grid has
 
 ### grid.nodeSize([nodeSize])
 
-If nodeSize is specified, sets the size of an individual node as [x, y].
+If nodeSize is specified, sets the size of an individual node as [width, height].
 
 If nodeSize is set, returns the current nodeSize.
 
