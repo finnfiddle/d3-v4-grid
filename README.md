@@ -80,7 +80,7 @@ Configure the grid to treat nodes either as bands or points (default).
 
 If `useBands` is set to `true` then the layout will use `d3.scaleBand()` to calculate positions. If it is set to false (default) then it will use `d3.scalePoint()`.
 
-### grid.padding([padding])
+### grid.padding([x, y])
 
 Specify the padding between the node bands as [x, y]. x and y are relative to the band width/height, similar to the padding parameter of d3.scale.ordinal().rangeBands().
 
